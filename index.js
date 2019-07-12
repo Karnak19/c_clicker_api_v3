@@ -11,8 +11,10 @@ const chalk = require("chalk");
 const error = chalk.bold.red;
 const success = chalk.bold.green;
 
+// Middlewares
 app.use(cors());
 app.use(express.json());
+app.use(require("express-status-monitor")());
 
 // Routes
 app.use("/users", require("./routes/users.route.js"));
