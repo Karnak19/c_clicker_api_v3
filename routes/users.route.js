@@ -22,6 +22,18 @@ router.get("/", (req, res) => {
     .catch(err => console.log(err));
 });
 
+// Get an user
+router.get("/:uuid", (req, res) => {
+  const uuid = req.params.uuid;
+  User.findOne({
+    where: {
+      uuid: uuid
+    }
+  })
+    .then(result => res.json(result))
+    .catch(err => console.log(err));
+});
+
 // Post an user
 router.post("/", (req, res) => {
   const payload = req.body;
