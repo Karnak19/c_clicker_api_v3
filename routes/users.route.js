@@ -45,8 +45,6 @@ router.post("/", (req, res) => {
     ...payload,
     score
   };
-  console.log(user);
-
   User.create(user)
     .then(result => res.json(result))
     .catch(err => console.log(err));

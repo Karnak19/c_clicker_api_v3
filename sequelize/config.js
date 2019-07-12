@@ -15,7 +15,8 @@ const conf = {
   username,
   password,
   database,
-  dialect
+  dialect,
+  logging: false
 };
 
 module.exports = conf;
