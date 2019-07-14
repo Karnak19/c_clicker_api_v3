@@ -8,7 +8,7 @@ const sequelize = require("./sequelize");
 // Swagger doc
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Console Logging
 const chalk = require("chalk");
@@ -18,7 +18,7 @@ const success = chalk.bold.green;
 // Middlewares
 app.use(cors());
 app.use(express.json());
-app.use(require("express-status-monitor")());
+app.use(require("express-status-monitor")({ title: "WCS Cookie Clicker" }));
 
 // Routes
 app.use("/users", require("./routes/users.route.js"));

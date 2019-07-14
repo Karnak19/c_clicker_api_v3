@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test PORT=4001 mocha --reporter=spec --exit",
+    "test": "NODE_ENV=test PORT=4001 mocha --reporter=list --exit",
     "start": "NODE_ENV=production node index.js",
     "dev": "nodemon app"
   },

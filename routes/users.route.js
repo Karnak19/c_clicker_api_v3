@@ -8,13 +8,15 @@ const router = express.Router();
 const User = require("../sequelize/models/users");
 
 // Logging date
-const chalk = require("chalk");
-const blue = chalk.cyan;
-router.use(function timeLog(req, res, next) {
-  let newDate = new Date(Date.now());
-  console.log(blue(`${newDate.toDateString()} ${newDate.toTimeString()}`));
-  next();
-});
+if (process.env.NODE_ENV != "test") {
+  const chalk = require("chalk");
+  const blue = chalk.cyan;
+  router.use(function timeLog(req, res, next) {
+    let newDate = new Date(Date.now());
+    console.log(blue(`${newDate.toDateString()} ${newDate.toTimeString()}`));
+    next();
+  });
+}
 
 // Get all users
 router.get("/", (req, res) => {
@@ -39,10 +41,11 @@ router.get("/:uuid", (req, res) => {
 router.post("/", (req, res) => {
   const payload = req.body;
   const schema = Joi.object().keys({
-    name: Joi.string().required()
+    pseudo: Joi.string().required()
   });
 
   Joi.validate(payload, schema, (err, value) => {
+    console.log(payload);
     const score = 0;
     const uuid = uuidv4();
     const user = {
@@ -52,9 +55,12 @@ router.post("/", (req, res) => {
     };
     if (!err) {
       User.create(user)
-        .then(result => res.json(result))
+        .then(result => {
+          res.json(result);
+        })
         .catch(err => console.log(err));
     } else {
+      console.log(err);
       res.status(400).json({
         status: "error",
         message: "invalid request body"
