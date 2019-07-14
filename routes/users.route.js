@@ -1,6 +1,7 @@
 const express = require("express");
 const sequelize = require("sequelize");
 const uuidv4 = require("uuid/v4");
+const Joi = require("joi");
 const router = express.Router();
 
 // Reach Sequelize model
@@ -37,17 +38,29 @@ router.get("/:uuid", (req, res) => {
 // Post an user
 router.post("/", (req, res) => {
   const payload = req.body;
-  const score = 0;
-  const uuid = uuidv4();
+  const schema = Joi.object().keys({
+    name: Joi.string().required()
+  });
 
-  const user = {
-    uuid,
-    ...payload,
-    score
-  };
-  User.create(user)
-    .then(result => res.json(result))
-    .catch(err => console.log(err));
+  Joi.validate(payload, schema, (err, value) => {
+    const score = 0;
+    const uuid = uuidv4();
+    const user = {
+      uuid,
+      ...payload,
+      score
+    };
+    if (!err) {
+      User.create(user)
+        .then(result => res.json(result))
+        .catch(err => console.log(err));
+    } else {
+      res.status(400).json({
+        status: "error",
+        message: "invalid request body"
+      });
+    }
+  });
 });
 
 // Increment score

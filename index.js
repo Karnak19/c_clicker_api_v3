@@ -1,10 +1,14 @@
 require("dotenv").config();
-
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 const sequelize = require("./sequelize");
+
+// Swagger doc
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Console Logging
 const chalk = require("chalk");

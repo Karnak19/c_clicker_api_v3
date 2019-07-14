@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test PORT=4001 mocha --reporter=spec --exit",
-    "start": "node index.js",
+    "start": "NODE_ENV=production node index.js",
     "dev": "nodemon app"
   },
   "keywords": [],
@@ -17,8 +17,10 @@
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "express-status-monitor": "^1.2.6",
+    "joi": "^14.3.1",
     "mysql2": "^1.6.5",
     "sequelize": "^5.10.0",
+    "swagger-ui-express": "^4.0.7",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
@@ -32,7 +34,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": " npm test && pretty-quick --staged",
+      "pre-commit": "pretty-quick --staged",
       "post-merge": "npm install"
     }
   }
