@@ -19,6 +19,8 @@
     "express-status-monitor": "^1.2.6",
     "joi": "^14.3.1",
     "mysql2": "^1.6.5",
+    "pg": "^7.11.0",
+    "pg-hstore": "^2.3.3",
     "sequelize": "^5.10.0",
     "swagger-ui-express": "^4.0.7",
     "uuid": "^3.3.2"
