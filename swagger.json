@@ -12,14 +12,14 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
-  "host": "localhost:4000",
+  "host": "c-clicker-api.herokuapp.com",
   "tags": [
     {
       "name": "user",
       "description": "Operations about user"
     }
   ],
-  "schemes": ["http", "https"],
+  "schemes": ["https", "http"],
   "paths": {
     "/users": {
       "post": {
