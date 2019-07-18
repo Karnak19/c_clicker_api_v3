@@ -69,25 +69,52 @@ describe("User", () => {
           });
       });
     });
-  });
-  describe("POST NEW USER", () => {
-    it("should post a new user", done => {
+    it("should return 404", done => {
       const user = {
         pseudo: "Jane Doe"
       };
       User.create(user).then(createdUser => {
         chai
           .request(server)
-          .post(`/users`)
-          .send(user)
+          .put(`/users/regexpfail/click`)
           .end((err, res) => {
             if (err) return done(err);
-            res.should.have.status(200);
-            res.body.should.be.a("object");
-            res.body.should.include(user);
+            res.should.have.status(404);
             done();
           });
       });
+    });
+  });
+  describe("POST NEW USER", () => {
+    it("should post a new user", done => {
+      const user = {
+        pseudo: "Jane Doe"
+      };
+      chai
+        .request(server)
+        .post(`/users`)
+        .send(user)
+        .end((err, res) => {
+          if (err) return done(err);
+          res.should.have.status(201);
+          res.body.should.be.a("object");
+          res.body.should.include(user);
+          done();
+        });
+    });
+    it("should FAIL to post a new user", done => {
+      const user = {
+        pseud: "Jane Doe"
+      };
+      chai
+        .request(server)
+        .post(`/users`)
+        .send(user)
+        .end((err, res) => {
+          if (err) return done(err);
+          res.should.have.status(400);
+          done();
+        });
     });
   });
 });

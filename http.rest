@@ -15,3 +15,15 @@ content-type: application/json
 ### Increment score
 PUT http://localhost:4000/users/885ef18f-10a7-495c-9f97-6a5447d7fe69/click HTTP/1.1
 content-type: application/json
+
+#__________#
+#__Heroku__#
+#__________#
+
+### Post an user
+POST https://c-clicker-api.herokuapp.com/users HTTP/1.1
+content-type: application/json
+
+{
+  "pseudo": "Sami"
+}
