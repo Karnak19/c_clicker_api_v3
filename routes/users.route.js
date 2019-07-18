@@ -4,13 +4,11 @@ const uuidv4 = require("uuid/v4");
 const Joi = require("joi");
 const router = express.Router();
 
+const regExpIntegrityCheck = require("../middlewares/regexpCheck");
 // Reach Sequelize model
 const User = require("../sequelize/models/users");
 
-// RegExp for uuid v4 integrity
-const uuidv4RegExp = /[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}/i;
-
-// Logging date
+// Logging date middleware
 if (process.env.NODE_ENV != "test") {
   const chalk = require("chalk");
   const blue = chalk.cyan;
@@ -35,29 +33,22 @@ router.get("/", (req, res) => {
 });
 
 // Get an user
-router.get("/:uuid", (req, res) => {
+router.get("/:uuid", regExpIntegrityCheck, (req, res) => {
   const uuid = req.params.uuid;
 
-  if (uuidv4RegExp.test(uuid)) {
-    User.findOne({
-      where: {
-        uuid: uuid
-      }
-    })
-      .then(result => res.status(200).json(result))
-      .catch(err => {
-        console.log(err);
-        res.status(400).json({
-          status: "error",
-          message: "Invalid request"
-        });
+  User.findOne({
+    where: {
+      uuid: uuid
+    }
+  })
+    .then(result => res.status(200).json(result))
+    .catch(err => {
+      console.log(err);
+      res.status(400).json({
+        status: "error",
+        message: "Invalid request"
       });
-  } else {
-    res.status(404).json({
-      status: "error",
-      message: "user not found"
     });
-  }
 });
 
 // Post an user
@@ -95,28 +86,21 @@ router.post("/", (req, res) => {
 });
 
 // Increment score
-router.put("/:uuid/click", (req, res) => {
+router.put("/:uuid/click", regExpIntegrityCheck, (req, res) => {
   const userUuid = req.params.uuid;
 
-  if (uuidv4RegExp.test(userUuid)) {
-    User.update(
-      { score: sequelize.literal("score+1") },
-      { where: { uuid: userUuid } }
-    )
-      .then(result => res.status(200).json(result))
-      .catch(err => {
-        console.log(err);
-        res.status(400).json({
-          status: "error",
-          message: "invalid request"
-        });
+  User.update(
+    { score: sequelize.literal("score+1") },
+    { where: { uuid: userUuid } }
+  )
+    .then(result => res.status(200).json(result))
+    .catch(err => {
+      console.log(err);
+      res.status(400).json({
+        status: "error",
+        message: "invalid request"
       });
-  } else {
-    res.status(404).json({
-      status: "error",
-      message: "user not found"
     });
-  }
 });
 
 module.exports = router;
