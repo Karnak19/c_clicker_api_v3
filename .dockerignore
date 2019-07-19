@@ -1,0 +1,6 @@
+.vscode/
+.git/
+/node_modules/
+.env
+Procfile
+/test/
