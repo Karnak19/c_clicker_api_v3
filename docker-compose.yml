@@ -18,6 +18,10 @@ services:
       - .env
     networks:
       - c_clicker_api
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 networks:
   c_clicker_api:
     driver: bridge
+volumes:
+  pgdata:
