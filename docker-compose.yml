@@ -12,8 +12,8 @@ services:
 
   db:
     image: postgres
-    env-file:
-      - .env.db.prod
+    env_file:
+      - .env
     networks:
       - c_clicker_api
 networks:
