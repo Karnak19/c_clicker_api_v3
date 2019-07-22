@@ -1,8 +1,8 @@
 version: "2.1"
 
 services:
-  c_clicker_api_v3:
-    image: c_clicker_api_v3
+  c_clicker_express_seq:
+    image: c_clicker_express_seq
     build: .
     environment:
       NODE_ENV: development

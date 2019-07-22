@@ -8,8 +8,6 @@ let dialect = process.env.DB_DIALECT;
 
 if (process.env.NODE_ENV === "test") {
   database = process.env.DB_DATABASE_TEST;
-} else if (process.env.NODE_ENV === "production") {
-  dialect = "postgres";
 }
 
 const conf = {

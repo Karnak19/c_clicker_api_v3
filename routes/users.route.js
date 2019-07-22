@@ -5,6 +5,7 @@ const Joi = require("joi");
 const router = express.Router();
 
 const regExpIntegrityCheck = require("../middlewares/regexpCheck");
+const { uuidv4RegExp } = require("../middlewares/regexpCheck");
 // Reach Sequelize model
 const User = require("../sequelize/models/users");
 
@@ -33,7 +34,7 @@ router.get("/", (req, res) => {
 });
 
 // Get an user
-router.get("/:uuid", regExpIntegrityCheck, (req, res) => {
+router.get("/:uuid", regExpIntegrityCheck(uuidv4RegExp), (req, res) => {
   const uuid = req.params.uuid;
 
   User.findOne({
@@ -86,14 +87,14 @@ router.post("/", (req, res) => {
 });
 
 // Increment score
-router.put("/:uuid/click", regExpIntegrityCheck, (req, res) => {
+router.put("/:uuid/click", regExpIntegrityCheck(uuidv4RegExp), (req, res) => {
   const userUuid = req.params.uuid;
 
   User.update(
     { score: sequelize.literal("score+1") },
     { where: { uuid: userUuid } }
   )
-    .then(result => res.status(200).json(result))
+    .then(result => res.status(200).end())
     .catch(err => {
       console.log(err);
       res.status(400).json({
