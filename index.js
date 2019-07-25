@@ -14,6 +14,8 @@ app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 const chalk = require("chalk");
 const error = chalk.bold.red;
 const success = chalk.bold.green;
+const awesomeLogger = require("./middlewares/awesomeLogger");
+app.use(awesomeLogger());
 
 // Middlewares
 app.use(cors());
