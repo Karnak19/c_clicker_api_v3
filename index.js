@@ -8,14 +8,12 @@ const sequelize = require("./sequelize");
 // Swagger doc
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
-app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Console Logging
 const chalk = require("chalk");
 const error = chalk.bold.red;
 const success = chalk.bold.green;
-const awesomeLogger = require("./middlewares/awesomeLogger");
-app.use(awesomeLogger());
 
 // Middlewares
 app.use(cors());

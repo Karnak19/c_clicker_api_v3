@@ -1,37 +1,35 @@
 version: "3.3"
 
 services:
-  # reverse-proxy:
-  #   image: traefik # The official Traefik docker image
-  #   command: --api --docker # Enables the web UI and tells Traefik to listen to docker
-  #   ports:
-  #     - "80:80" # The HTTP port
-  #     - "8080:8080" # The Web UI (enabled by --api)
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
   api:
     build: .
     env_file:
       - .env
     environment:
       NODE_ENV: production
-    ports:
-      - 4000:4000
     networks:
-      - c_clicker_api
-
+      - web
+    labels:
+      - traefik.frontend.rule=Host:bidart.wilders.dev;PathPrefixStrip:/c_clicker
+      - traefik.enable=true
+      - traefik.backend=c_click
+      - traefik.docker.network=web
+      - traefik.port=4000
+    # volumes:
+    #   - appdata:/src
   db:
     image: postgres
     env_file:
       - .env
     networks:
-      - c_clicker_api
-    ports:
-      - 5432:5432
+      - web
     volumes:
       - pgdata:/var/lib/postgresql/data
+
 networks:
-  c_clicker_api:
-    driver: bridge
+  web:
+    external: true
+
 volumes:
   pgdata:
+  # appdata:

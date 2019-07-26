@@ -16,13 +16,10 @@ const awesomeLogger = (req, res, next) => {
     let logFile = `[${now}] : ${logMessage}`;
     switch (code) {
       case 200:
-        logMessage = green(logMessage);
       case 201:
         logMessage = green(logMessage);
       case 400:
-        logMessage = red(logMessage);
       case 404:
-        logMessage = red(logMessage);
       case 500:
         logMessage = red(logMessage);
       default:
