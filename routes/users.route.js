@@ -10,10 +10,11 @@ const { uuidv4RegExp } = require("../middlewares/regexpCheck");
 const User = require("../sequelize/models/users");
 
 // Console Logging
-const awesomeLogger = require("../middlewares/awesomeLogger");
+const awesomeLogger = require("../middlewares/samiLogger");
+// const awesomeLogger = require("../middlewares/awesomeLogger");
 
 if (process.env.NODE_ENV != "test") {
-  router.use(awesomeLogger);
+  router.use(awesomeLogger());
 }
 
 // Get all users
