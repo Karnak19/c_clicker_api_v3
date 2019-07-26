@@ -9,15 +9,11 @@ const { uuidv4RegExp } = require("../middlewares/regexpCheck");
 // Reach Sequelize model
 const User = require("../sequelize/models/users");
 
-// Logging date middleware
+// Console Logging
+const awesomeLogger = require("../middlewares/awesomeLogger");
+
 if (process.env.NODE_ENV != "test") {
-  const chalk = require("chalk");
-  const blue = chalk.cyan;
-  router.use(function timeLog(req, res, next) {
-    let newDate = new Date(Date.now());
-    console.log(blue(`${newDate.toDateString()} ${newDate.toTimeString()}`));
-    next();
-  });
+  router.use(awesomeLogger);
 }
 
 // Get all users
