@@ -3,4 +3,4 @@
 *.sql
 *.rest
 .vscode/
-/logs/
+logs/*
