@@ -1,20 +1,24 @@
 const express = require("express");
+const router = express.Router();
 const sequelize = require("sequelize");
 const uuidv4 = require("uuid/v4");
 const Joi = require("joi");
-const router = express.Router();
 
+// custom Middlewares
 const regExpIntegrityCheck = require("../middlewares/regexpCheck");
 const { uuidv4RegExp } = require("../middlewares/regexpCheck");
+
+const joiValidate = require("../middlewares/joiValidate");
+const { usersPost } = require("../schemas");
+
 // Reach Sequelize model
 const User = require("../sequelize/models/users");
 
 // Console Logging
-const awesomeLogger = require("../middlewares/samiLogger");
-// const awesomeLogger = require("../middlewares/awesomeLogger");
+const awesomeLogger = require("../middlewares/awesomeLogger");
 
 if (process.env.NODE_ENV != "test") {
-  router.use(awesomeLogger());
+  router.use(awesomeLogger);
 }
 
 // Get all users
@@ -50,37 +54,24 @@ router.get("/:uuid", regExpIntegrityCheck(uuidv4RegExp), (req, res) => {
 });
 
 // Post an user
-router.post("/", (req, res) => {
+router.post("/", joiValidate(usersPost, "body"), (req, res) => {
   const payload = req.body;
-  const schema = Joi.object().keys({
-    pseudo: Joi.string().required()
-  });
 
-  Joi.validate(payload, schema, (err, value) => {
-    const score = 0;
-    const uuid = uuidv4();
-    const user = {
-      uuid,
-      ...payload,
-      score
-    };
-    if (!err) {
-      User.create(user)
-        .then(result => res.status(201).json(result))
-        .catch(err => {
-          res.status(400).json({
-            status: "error",
-            message: `invalid request body`
-          });
-        });
-    } else {
+  const score = 0;
+  const uuid = uuidv4();
+  const user = {
+    uuid,
+    ...payload,
+    score
+  };
+  User.create(user)
+    .then(result => res.status(201).json(result))
+    .catch(err => {
       res.status(400).json({
         status: "error",
-        message: "invalid request body",
-        err
+        message: `invalid request`
       });
-    }
-  });
+    });
 });
 
 // Increment score

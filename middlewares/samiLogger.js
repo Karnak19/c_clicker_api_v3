@@ -1,11 +1,9 @@
-const express = require("express");
 const fs = require("fs");
 const pathname = require("path");
 const chalk = require("chalk");
 const green = chalk.bold.green;
 const red = chalk.bold.red;
 const white = chalk.bold.white;
-const blue = chalk.cyan;
 
 const noOp = a => a;
 
