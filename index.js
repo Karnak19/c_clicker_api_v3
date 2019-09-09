@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 const PORT = process.env.PORT || 4000;
 const sequelize = require("./sequelize");
+const graphqlHttp = require("express-graphql");
 
 // Swagger doc
 const swaggerUi = require("swagger-ui-express");
@@ -21,6 +22,18 @@ app.use(awesomeLogger());
 app.use(cors());
 app.use(express.json());
 app.use(require("express-status-monitor")({ title: "WCS Cookie Clicker" }));
+
+// GraphQL
+const { schema } = require("./graphql/schema");
+const { root } = require("./graphql/root");
+app.use(
+  "/graphql",
+  graphqlHttp({
+    schema: schema,
+    rootValue: root,
+    graphiql: true
+  })
+);
 
 // Routes
 app.use("/users", require("./routes/users.route.js"));
