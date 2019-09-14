@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test PORT=4001 mocha --reporter=list --exit",
-    "start": "NODE_ENV=production node index.js",
-    "dev": "nodemon index.js"
+    "start": "NODE_ENV=production cd logs-app && npm run build && cd .. && node index.js",
+    "dev": "cd logs-app && npm run build && cd .. && nodemon index.js"
   },
   "keywords": [],
   "author": "",

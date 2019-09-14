@@ -15,6 +15,7 @@ const awesomeLogger = (req, res, next) => {
     const time = Date.now() - now;
     let logMessage = `${method} ${path} ${code}`;
     const logFile = `[${now}] : ${logMessage} (${time}ms)`;
+
     switch (code) {
       case 200:
       case 201:
@@ -33,9 +34,20 @@ const awesomeLogger = (req, res, next) => {
       pathname.resolve(__dirname, "../logs/serverlog.txt"),
       `${logFile}\n`,
       err => {
-        if (err) console.log(err);
+        if (err) throw err;
       }
     );
+
+    // const obj = require(pathname.resolve(__dirname, "../logs/serverlog.txt"));
+    // obj.push({
+    //   date: now,
+    //   message: logMessage,
+    //   time: time
+    // });
+    // console.log(obj);
+    // fs.writeFile(pathname.resolve(__dirname, "../logs/serverlog.txt"), JSON.stringify(obj), function(err) {
+    //   if (err) console.log(err);
+    // });
   });
 
   next();
