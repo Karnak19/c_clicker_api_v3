@@ -3,7 +3,7 @@ const uuidv4 = require("uuid/v4");
 const Joi = require("joi");
 const User = require("../sequelize/models/users");
 
-export const root = {
+module.exports.root = {
   hello: () => "Hello world !",
   users: () => {
     return User.findAll()
