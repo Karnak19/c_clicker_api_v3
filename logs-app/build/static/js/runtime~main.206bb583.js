@@ -1,16 +1,16 @@
 !(function(e) {
   function r(r) {
     for (
-      var n, l, p = r[0], a = r[1], f = r[2], c = 0, s = [];
-      c < p.length;
-      c++
+      var n, l, p = r[0], a = r[1], i = r[2], f = 0, s = [];
+      f < p.length;
+      f++
     )
-      (l = p[c]),
+      (l = p[f]),
         Object.prototype.hasOwnProperty.call(o, l) && o[l] && s.push(o[l][0]),
         (o[l] = 0);
     for (n in a) Object.prototype.hasOwnProperty.call(a, n) && (e[n] = a[n]);
-    for (i && i(r); s.length; ) s.shift()();
-    return u.push.apply(u, f || []), t();
+    for (c && c(r); s.length; ) s.shift()();
+    return u.push.apply(u, i || []), t();
   }
   function t() {
     for (var e, r = 0; r < u.length; r++) {
@@ -74,13 +74,13 @@
     (l.o = function(e, r) {
       return Object.prototype.hasOwnProperty.call(e, r);
     }),
-    (l.p = "/");
+    (l.p = "/c_clicker/");
   var p = (window["webpackJsonplogs-app"] =
       window["webpackJsonplogs-app"] || []),
     a = p.push.bind(p);
   (p.push = r), (p = p.slice());
-  for (var f = 0; f < p.length; f++) r(p[f]);
-  var i = a;
+  for (var i = 0; i < p.length; i++) r(p[i]);
+  var c = a;
   t();
 })([]);
-//# sourceMappingURL=runtime~main.20a8f3c7.js.map
+//# sourceMappingURL=runtime~main.206bb583.js.map

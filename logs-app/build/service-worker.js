@@ -15,7 +15,9 @@ importScripts(
   "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js"
 );
 
-importScripts("/precache-manifest.b2e4072c10c48e34b21d864c1ddf6b2f.js");
+importScripts(
+  "/c_clicker/precache-manifest.233445ed39adf22d0ac39a3b6c02f64d.js"
+);
 
 self.addEventListener("message", event => {
   if (event.data && event.data.type === "SKIP_WAITING") {
@@ -34,7 +36,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 workbox.routing.registerNavigationRoute(
-  workbox.precaching.getCacheKeyForURL("/index.html"),
+  workbox.precaching.getCacheKeyForURL("/c_clicker/index.html"),
   {
     blacklist: [/^\/_/, /\/[^\/?]+\.[^\/]+$/]
   }
