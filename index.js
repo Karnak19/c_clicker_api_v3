@@ -19,8 +19,11 @@ const success = chalk.bold.green;
 const awesomeLogger = require("./middlewares/awesomeLogger");
 
 app.use(express.static(path.join(__dirname, "logs-app/build")));
-app.get("/logs", awesomeLogger, (req, res) => {
+app.get("/monitor", awesomeLogger, (req, res) => {
   res.sendFile(path.join(__dirname, "./logs-app/build/index.html"));
+});
+app.get("/logs", (req, res) => {
+  res.sendFile(path.join(__dirname, "logs/serverlog.json"));
 });
 
 // Middlewares

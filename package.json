@@ -41,5 +41,11 @@
       "pre-commit": "npm test && pretty-quick --staged",
       "post-merge": "npm install"
     }
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "logs-app/*",
+      "logs/*"
+    ]
   }
 }
