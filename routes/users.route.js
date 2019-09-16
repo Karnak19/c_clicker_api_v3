@@ -9,7 +9,7 @@ const regExpIntegrityCheck = require("../middlewares/regexpCheck");
 const { uuidv4RegExp } = require("../middlewares/regexpCheck");
 
 const joiValidate = require("../middlewares/joiValidate");
-const { usersPost } = require("../schemas");
+const { usersPost } = require("../joiSchemas");
 
 // Reach Sequelize model
 const User = require("../sequelize/models/users");
