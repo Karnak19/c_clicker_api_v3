@@ -1,0 +1,170 @@
+@import url(https://fonts.googleapis.com/css?family=Inconsolata&display=swap);
+div {
+  font-family: Inconsolata, monospace;
+}
+body {
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #333;
+}
+.term,
+body {
+  display: flex;
+}
+.term {
+  width: 50vw;
+  height: 30vw;
+  border-radius: 7px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.56);
+  background: #000;
+  flex-direction: column;
+  overflow: hidden;
+}
+.term-header {
+  display: flex;
+  padding: 5px;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    from(#e2e0e2),
+    to(#c7c6c8)
+  );
+  background: -webkit-linear-gradient(#e2e0e2, #c7c6c8);
+  background: linear-gradient(#e2e0e2, #c7c6c8);
+}
+.term-header-button {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 0;
+}
+.term-header-button-close {
+  background: #ff615a;
+}
+.term-header-button-minimize {
+  background: #ffc230;
+}
+.term-header-button-expand {
+  background: #29cb41;
+}
+.term-header-title {
+  text-align: center;
+  color: #494849;
+  font-family: sans-serif;
+  font-size: 13px;
+  width: 100%;
+}
+.term.inactive .term-header {
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    from(#f8f8f8),
+    to(#f7f6f7)
+  );
+  background: -webkit-linear-gradient(top, #f8f8f8, #f7f6f7);
+  background: linear-gradient(180deg, #f8f8f8 0, #f7f6f7);
+}
+.term.inactive .term-header-button-close,
+.term.inactive .term-header-button-expand,
+.term.inactive .term-header-button-minimize {
+  border: 1px solid #d0d0d0;
+  background-color: #ddd;
+}
+.term.inactive .term-header-title {
+  color: #b7b6b7;
+}
+.term-content {
+  overflow-y: auto;
+  padding: 10px;
+  font-size: 14px;
+  color: #d3d3d3;
+}
+.term-content-arrow {
+  color: #55f95d;
+  margin-right: 10px;
+}
+.term-content-tilde {
+  color: #54f9fb;
+  margin-right: 10px;
+}
+.term-content-caret {
+  height: 17px;
+  width: 6px;
+  display: inline-block;
+  border: 1px solid #d3d3d3;
+  position: relative;
+  top: 5px;
+  -webkit-transition: none;
+  transition: none;
+  -webkit-animation: blink 0.8s linear infinite alternate;
+  animation: blink 0.8s linear infinite alternate;
+}
+@-webkit-keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  to {
+    opacity: 0;
+  }
+}
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  to {
+    opacity: 0;
+  }
+}
+.App {
+  text-align: center;
+}
+.App-logo {
+  -webkit-animation: App-logo-spin 20s linear infinite;
+  animation: App-logo-spin 20s linear infinite;
+  height: 40vmin;
+  pointer-events: none;
+}
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #fff;
+}
+.App-link {
+  color: #61dafb;
+}
+@-webkit-keyframes App-logo-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(1turn);
+    transform: rotate(1turn);
+  }
+}
+@keyframes App-logo-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(1turn);
+    transform: rotate(1turn);
+  }
+}
+/*# sourceMappingURL=main.6c146267.chunk.css.map */
