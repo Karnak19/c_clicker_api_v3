@@ -18,6 +18,8 @@ const error = chalk.bold.red;
 const success = chalk.bold.green;
 const awesomeLogger = require("./middlewares/awesomeLogger");
 
+app.get("/", (req, res) => res.send("Hello world !"));
+
 app.use(express.static(path.join(__dirname, "logs-app/build")));
 app.get("/monitor", awesomeLogger, (req, res) => {
   res.sendFile(path.join(__dirname, "./logs-app/build/index.html"));
