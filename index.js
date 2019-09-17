@@ -18,20 +18,16 @@ const error = chalk.bold.red;
 const success = chalk.bold.green;
 const awesomeLogger = require("./middlewares/awesomeLogger");
 
-app.get("/", (req, res) => res.send("Hello world !"));
-
-app.use(express.static(path.join(__dirname, "logs-app/build")));
-app.get("/monitor", awesomeLogger, (req, res) => {
-  res.sendFile(path.join(__dirname, "./logs-app/build/index.html"));
-});
-app.get("/logs", (req, res) => {
-  res.sendFile(path.join(__dirname, "logs/serverlog.json"));
-});
-
 // Middlewares
 app.use(cors());
 app.use(express.json());
 app.use(require("express-status-monitor")({ title: "WCS Cookie Clicker" }));
+
+app.get("/", (req, res) => res.send("Hello world !"));
+
+app.get("/logs", (req, res) => {
+  res.sendFile(path.join(__dirname, "logs/serverlog.json"));
+});
 
 // GraphQL
 const { schema } = require("./graphql/schema");

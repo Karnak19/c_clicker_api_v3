@@ -4,3 +4,4 @@
 *.rest
 .vscode/
 logs/*
+logs-app/*
