@@ -16,7 +16,7 @@ importScripts(
 );
 
 importScripts(
-  "/c_clicker/precache-manifest.233445ed39adf22d0ac39a3b6c02f64d.js"
+  "/c_clicker/monitor/precache-manifest.8efb681408ccdd164b7d28fae22ff7a1.js"
 );
 
 self.addEventListener("message", event => {
@@ -36,7 +36,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 workbox.routing.registerNavigationRoute(
-  workbox.precaching.getCacheKeyForURL("/c_clicker/index.html"),
+  workbox.precaching.getCacheKeyForURL("/c_clicker/monitor/index.html"),
   {
     blacklist: [/^\/_/, /\/[^\/?]+\.[^\/]+$/]
   }
