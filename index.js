@@ -16,7 +16,6 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 const chalk = require("chalk");
 const error = chalk.bold.red;
 const success = chalk.bold.green;
-const awesomeLogger = require("./middlewares/awesomeLogger");
 
 // Middlewares
 app.use(cors());
@@ -30,13 +29,13 @@ app.get("/logs", (req, res) => {
 });
 
 // GraphQL
-const { schema } = require("./graphql/schema");
-const { root } = require("./graphql/root");
+const graphQlSchemas = require("./graphql/schema");
+const graphQlResolvers = require("./graphql/resolvers");
 app.use(
   "/graphql",
   graphqlHttp({
-    schema: schema,
-    rootValue: root,
+    schema: graphQlSchemas,
+    rootValue: graphQlResolvers,
     graphiql: true
   })
 );

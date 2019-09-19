@@ -1,10 +1,6 @@
 const { buildSchema } = require("graphql");
 
-module.exports.schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-
+module.exports = buildSchema(`
   type User {
     uuid: String!
     pseudo: String!
@@ -17,10 +13,12 @@ module.exports.schema = buildSchema(`
 
   type RootQuery {
     users : [User!]!
+    userByID(uuid: String!) : User!
   }
-
+  
   type RootMutation {
     createUser(userInput: UserInput): User
+    userClick(uuid: String!): User
   }
 
   schema {
