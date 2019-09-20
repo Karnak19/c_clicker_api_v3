@@ -43,11 +43,13 @@ module.exports = {
     return updatedUser;
   },
   createUser: ({ userInput }) => {
+    const { pseudo, team } = userInput;
     const uuid = uuidv4();
     const score = 0;
     const user = {
       uuid,
-      ...userInput,
+      pseudo,
+      TeamUuid: team,
       score
     };
     return User.create(user)

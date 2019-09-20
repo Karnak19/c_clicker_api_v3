@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const sequelize = require("sequelize");
 const uuidv4 = require("uuid/v4");
 
 // custom Middlewares
@@ -8,9 +7,10 @@ const regExpIntegrityCheck = require("../middlewares/regexpCheck");
 const { uuidv4RegExp } = require("../middlewares/regexpCheck");
 
 const joiValidate = require("../middlewares/joiValidate");
-const { usersPost } = require("../joiSchemas");
+const { teamsPost } = require("../joiSchemas");
 
 // Reach Sequelize models
+const Team = require("../sequelize/models/teams");
 const User = require("../sequelize/models/users");
 
 // Console Logging
@@ -20,10 +20,9 @@ if (process.env.NODE_ENV != "test") {
   router.use(awesomeLogger);
 }
 
-// Get all users
 router.get("/", (req, res) => {
-  User.findAll()
-    .then(users => res.status(200).json(users))
+  Team.findAll()
+    .then(teams => res.status(200).json(teams))
     .catch(err => {
       console.log(err);
       res.status(400).json({
@@ -33,16 +32,14 @@ router.get("/", (req, res) => {
     });
 });
 
-// Get an user
-router.get("/:uuid", regExpIntegrityCheck(uuidv4RegExp), (req, res) => {
-  const uuid = req.params.uuid;
-
-  User.findOne({
+router.get("/:uuid/users", regExpIntegrityCheck(uuidv4RegExp), (req, res) => {
+  const teamUuid = req.params.uuid;
+  User.findAll({
     where: {
-      uuid: uuid
+      TeamUuid: teamUuid
     }
   })
-    .then(result => res.status(200).json(result))
+    .then(result => res.json(result))
     .catch(err => {
       console.log(err);
       res.status(400).json({
@@ -52,43 +49,20 @@ router.get("/:uuid", regExpIntegrityCheck(uuidv4RegExp), (req, res) => {
     });
 });
 
-// Post an user
-router.post("/", joiValidate(usersPost, "body"), (req, res) => {
-  const pseudo = req.body.pseudo;
-  const team = req.body.team;
-
-  const score = 0;
+router.post("/", joiValidate(teamsPost, "body"), (req, res) => {
+  const payload = req.body;
   const uuid = uuidv4();
-  const user = {
+  const newTeam = {
     uuid,
-    pseudo,
-    TeamUuid: team,
-    score
+    ...payload
   };
-  User.create(user)
+
+  Team.create(newTeam)
     .then(result => res.status(201).json(result))
     .catch(err => {
       res.status(400).json({
         status: "error",
         message: `invalid request`
-      });
-    });
-});
-
-// Increment score
-router.put("/:uuid/click", regExpIntegrityCheck(uuidv4RegExp), (req, res) => {
-  const userUuid = req.params.uuid;
-
-  User.update(
-    { score: sequelize.literal("score+1") },
-    { where: { uuid: userUuid } }
-  )
-    .then(result => res.status(200).end())
-    .catch(err => {
-      console.log(err);
-      res.status(400).json({
-        status: "error",
-        message: "invalid request"
       });
     });
 });

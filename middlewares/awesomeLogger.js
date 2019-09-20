@@ -16,7 +16,6 @@ const awesomeLogger = (req, res, next) => {
     const code = this.statusCode;
     const time = Date.now() - now;
     let logMessage = `${method} ${path} ${code}`;
-    // const logFile = `[${now}] : ${logMessage} (${time}ms)`;
     const log = {
       date: now,
       method: method,

@@ -5,10 +5,12 @@ module.exports = buildSchema(`
     uuid: String!
     pseudo: String!
     score: Int!
+    TeamUuid: String!
   }
 
   input UserInput {
     pseudo: String!
+    team: String!
   }
 
   type RootQuery {

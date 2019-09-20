@@ -5,6 +5,7 @@ const cors = require("cors");
 const path = require("path");
 const PORT = process.env.PORT || 4000;
 const sequelize = require("./sequelize");
+require("./sequelize/associations");
 const graphqlHttp = require("express-graphql");
 
 // Swagger doc
@@ -42,6 +43,7 @@ app.use(
 
 // Routes
 app.use("/users", require("./routes/users.route.js"));
+app.use("/teams", require("./routes/teams.route.js"));
 
 async function main() {
   await sequelize.sync();
