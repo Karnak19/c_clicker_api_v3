@@ -67,4 +67,6 @@ router.post("/", joiValidate(teamsPost, "body"), (req, res) => {
     });
 });
 
+// TODO: finish the CRUD here
+
 module.exports = router;

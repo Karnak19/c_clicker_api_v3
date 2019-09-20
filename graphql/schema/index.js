@@ -1,5 +1,7 @@
 const { buildSchema } = require("graphql");
 
+// TODO: Create Team type and queries/mutations
+
 module.exports = buildSchema(`
   type User {
     uuid: String!
