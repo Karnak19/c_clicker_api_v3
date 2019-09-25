@@ -10,19 +10,32 @@ module.exports = buildSchema(`
     TeamUuid: String!
   }
 
+  type Team {
+    uuid: String!
+    name: String!
+    Users: [User!]
+  }
+
   input UserInput {
     pseudo: String!
     team: String!
   }
 
+  input TeamInput {
+    name: String!
+  }
+
   type RootQuery {
     users : [User!]!
     userByID(uuid: String!) : User!
+    teams: [Team!]!
+    teamById(uuid: String!): Team!
   }
   
   type RootMutation {
     createUser(userInput: UserInput): User
     userClick(uuid: String!): User
+    createTeam(teamInput: TeamInput): Team
   }
 
   schema {

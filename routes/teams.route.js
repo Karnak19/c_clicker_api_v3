@@ -21,7 +21,7 @@ if (process.env.NODE_ENV != "test") {
 }
 
 router.get("/", (req, res) => {
-  Team.findAll()
+  Team.findAll({ include: [{ model: User, as: "users" }] })
     .then(teams => res.status(200).json(teams))
     .catch(err => {
       console.log(err);

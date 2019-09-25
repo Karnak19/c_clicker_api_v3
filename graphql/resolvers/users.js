@@ -1,18 +1,16 @@
 const sequelize = require("sequelize");
 const uuidv4 = require("uuid/v4");
-const Joi = require("joi");
 const User = require("../../sequelize/models/users");
 
 module.exports = {
-  users: () => {
-    return User.findAll()
-      .then(users => {
-        return users;
-      })
-      .catch(err => {
-        console.log(err);
-        throw err;
-      });
+  users: async () => {
+    const users = await User.findAll();
+    try {
+      return users;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
   },
   userByID: ({ uuid }) => {
     return User.findOne({
