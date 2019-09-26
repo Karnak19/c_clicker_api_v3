@@ -5,7 +5,9 @@ const User = require("../../sequelize/models/users");
 
 module.exports = {
   teams: async () => {
-    const teams = await Team.findAll({ include: [{ model: User }] });
+    const teams = await Team.findAll({
+      include: [{ model: User, as: "users" }]
+    });
     try {
       return teams;
     } catch (err) {

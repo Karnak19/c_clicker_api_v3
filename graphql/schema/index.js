@@ -13,7 +13,7 @@ module.exports = buildSchema(`
   type Team {
     uuid: String!
     name: String!
-    Users: [User!]
+    users: [User!]
   }
 
   input UserInput {
