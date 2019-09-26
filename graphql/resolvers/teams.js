@@ -19,7 +19,8 @@ module.exports = {
     return Team.findOne({
       where: {
         uuid: uuid
-      }
+      },
+      include: [{ model: User, as: "users" }]
     })
       .then(result => result)
       .catch(err => {

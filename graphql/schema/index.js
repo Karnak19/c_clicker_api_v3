@@ -29,7 +29,7 @@ module.exports = buildSchema(`
     users : [User!]!
     userByID(uuid: String!) : User!
     teams: [Team!]!
-    teamById(uuid: String!): Team!
+    teamByID(uuid: String!): Team!
   }
   
   type RootMutation {

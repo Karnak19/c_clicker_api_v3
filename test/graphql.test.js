@@ -12,20 +12,104 @@ beforeEach(() => {
   return sequelize.sync({ force: true });
 });
 
+const teamSample = {
+  name: "Foo Bar"
+};
+const userSample = {
+  pseudo: "Jane Doe",
+  score: 0
+};
+
 describe("GraphQL", () => {
-  describe("users query", () => {
-    it("should return collection of users", done => {
-      const team = {
-        name: "Foo Bar"
-      };
-      Team.create(team).then(createdTeam => {
+  // TEAMS QUERIES
+  describe("teams query", () => {
+    it("shourld return collection of teams", done => {
+      Team.create(teamSample).then(createdTeam => {
         const { uuid } = createdTeam;
-        const userSample = {
-          pseudo: "Jane Doe",
-          score: 0,
+        const user = {
+          ...userSample,
           TeamUuid: uuid
         };
-        User.create(userSample).then(createdUser => {
+        User.create(user).then(createdUser => {
+          chai
+            .request(server)
+            .post("/graphql")
+            .send({
+              query: `{teams{uuid name users{uuid pseudo score TeamUuid}}}`
+            })
+            .end((err, res) => {
+              if (err) return done(err);
+              res.should.have.status(200);
+              const body = res.body;
+              body.should.be.a("object");
+              body.data.should.be.a("object");
+              body.data.teams.should.be.a("array");
+              body.data.teams.length.should.be.eql(1);
+              body.data.teams[0].should.have.keys("uuid", "name", "users");
+              body.data.teams[0].users.length.should.be.eql(1);
+              body.data.teams[0].users.should.be.a("array");
+              body.data.teams[0].users[0].should.have.keys(
+                "uuid",
+                "pseudo",
+                "score",
+                "TeamUuid"
+              );
+              body.data.teams[0].users[0].should.include(user);
+              done();
+            });
+        });
+      });
+    });
+  });
+  describe("teamByID query", () => {
+    it("should return an unique team", done => {
+      Team.create(teamSample).then(createdTeam => {
+        const { uuid } = createdTeam;
+        const user = {
+          ...userSample,
+          TeamUuid: uuid
+        };
+        User.create(user).then(createdUser => {
+          chai
+            .request(server)
+            .post("/graphql")
+            .send({
+              query: `{teamByID(uuid:"${uuid}"){uuid name users{uuid pseudo score TeamUuid}}}`
+            })
+            .end((err, res) => {
+              if (err) return done(err);
+              res.should.have.status(200);
+              const body = res.body;
+              body.should.be.a("object");
+              body.data.should.be.a("object");
+              body.data.teamByID.should.be.a("object");
+              body.data.teamByID.should.have.keys("uuid", "name", "users");
+              body.data.teamByID.users.length.should.be.eql(1);
+              body.data.teamByID.users.should.be.a("array");
+              body.data.teamByID.users[0].should.have.keys(
+                "uuid",
+                "pseudo",
+                "score",
+                "TeamUuid"
+              );
+              body.data.teamByID.users[0].should.include(user);
+              done();
+            });
+        });
+      });
+    });
+  });
+
+  // USERS QUERIES
+  describe("users query", () => {
+    it("should return collection of users", done => {
+      Team.create(teamSample).then(createdTeam => {
+        const { uuid } = createdTeam;
+        const user = {
+          ...userSample,
+          TeamUuid: uuid
+        };
+        User.create(user).then(createdUser => {
           chai
             .request(server)
             .post("/graphql")
@@ -47,18 +131,13 @@ describe("GraphQL", () => {
   });
   describe("userByID query", () => {
     it("should return an unique user", done => {
-      const team = {
-        name: "Foo Bar"
-      };
-      Team.create(team).then(createdTeam => {
+      Team.create(teamSample).then(createdTeam => {
         const { uuid } = createdTeam;
-
-        const userSample = {
-          pseudo: "Jane Doe",
-          score: 0,
+        const user = {
+          ...userSample,
           TeamUuid: uuid
         };
-        User.create(userSample).then(createdUser => {
+        User.create(user).then(createdUser => {
           chai
             .request(server)
             .post("/graphql")
@@ -85,9 +164,15 @@ describe("GraphQL", () => {
       });
     });
   });
+
+  // TEAMS MUTATIONS
+  // TODO: Write team mutation tests
+
+  // USERS MUTATIONS
+
   describe("createUser mutation", () => {
     it("should create a new user", done => {
-      Team.create({ name: "Foo Bar" }).then(createdTeam => {
+      Team.create(teamSample).then(createdTeam => {
         const { uuid } = createdTeam;
         chai
           .request(server)
@@ -115,17 +200,13 @@ describe("GraphQL", () => {
   });
   describe("userClick mutation", () => {
     it("should create a new user", done => {
-      const team = {
-        name: "Foo Bar"
-      };
-      Team.create(team).then(createdTeam => {
+      Team.create(teamSample).then(createdTeam => {
         const { uuid } = createdTeam;
-        const userSample = {
-          pseudo: "Jane Doe",
-          score: 0,
+        const user = {
+          ...userSample,
           TeamUuid: uuid
         };
-        User.create(userSample).then(createdUser => {
+        User.create(user).then(createdUser => {
           chai
             .request(server)
             .post("/graphql")
