@@ -23,9 +23,12 @@ const awesomeLogger = (req, res, next) => {
       code: code,
       time: time
     };
-    const logFile = fs.readFileSync(logFileTxt);
-    const jsonFile = JSON.parse(logFile);
-    jsonFile.push(log);
+
+    if (process.env.NODE_ENV !== "production") {
+      const logFile = fs.readFileSync(logFileTxt);
+      const jsonFile = JSON.parse(logFile);
+      jsonFile.push(log);
+    }
 
     switch (code) {
       case 200:
@@ -41,9 +44,12 @@ const awesomeLogger = (req, res, next) => {
     }
     let colorlog = `[${white(humanNow)}] : ${logMessage} (${time}ms)`;
     console.log(colorlog);
-    fs.writeFile(logFileTxt, JSON.stringify(jsonFile), err => {
-      if (err) throw err;
-    });
+
+    if (process.env.NODE_ENV !== "production") {
+      fs.writeFile(logFileTxt, JSON.stringify(jsonFile), err => {
+        if (err) throw err;
+      });
+    }
   });
 
   next();
