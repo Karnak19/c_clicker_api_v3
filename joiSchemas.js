@@ -1,5 +1,7 @@
 const Joi = require("joi");
 
+const { urlImgRegExp } = require("./middlewares/regexpCheck");
+
 module.exports.usersPost = Joi.object().keys({
   pseudo: Joi.string().required(),
   team: Joi.string()
@@ -8,5 +10,6 @@ module.exports.usersPost = Joi.object().keys({
 });
 
 module.exports.teamsPost = Joi.object().keys({
-  name: Joi.string().required()
+  name: Joi.string().required(),
+  logo: Joi.string().regex(urlImgRegExp)
 });
