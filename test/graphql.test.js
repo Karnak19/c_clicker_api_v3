@@ -13,7 +13,8 @@ beforeEach(() => {
 });
 
 const teamSample = {
-  name: "Foo Bar"
+  name: "Foo Bar",
+  logo: "https://www.stickpng.com/assets/images/5848152fcef1014c0b5e4967.png"
 };
 const userSample = {
   pseudo: "Jane Doe",
@@ -35,7 +36,7 @@ describe("GraphQL", () => {
             .request(server)
             .post("/graphql")
             .send({
-              query: `{teams{uuid name users{uuid pseudo score TeamUuid}}}`
+              query: `{teams{uuid name logo users{uuid pseudo score TeamUuid}}}`
             })
             .end((err, res) => {
               if (err) return done(err);
@@ -45,7 +46,12 @@ describe("GraphQL", () => {
               body.data.should.be.a("object");
               body.data.teams.should.be.a("array");
               body.data.teams.length.should.be.eql(1);
-              body.data.teams[0].should.have.keys("uuid", "name", "users");
+              body.data.teams[0].should.have.keys(
+                "uuid",
+                "name",
+                "users",
+                "logo"
+              );
               body.data.teams[0].users.length.should.be.eql(1);
               body.data.teams[0].users.should.be.a("array");
               body.data.teams[0].users[0].should.have.keys(
@@ -74,7 +80,7 @@ describe("GraphQL", () => {
             .request(server)
             .post("/graphql")
             .send({
-              query: `{teamByID(uuid:"${uuid}"){uuid name users{uuid pseudo score TeamUuid}}}`
+              query: `{teamByID(uuid:"${uuid}"){uuid name logo users{uuid pseudo score TeamUuid}}}`
             })
             .end((err, res) => {
               if (err) return done(err);
@@ -83,7 +89,12 @@ describe("GraphQL", () => {
               body.should.be.a("object");
               body.data.should.be.a("object");
               body.data.teamByID.should.be.a("object");
-              body.data.teamByID.should.have.keys("uuid", "name", "users");
+              body.data.teamByID.should.have.keys(
+                "uuid",
+                "name",
+                "users",
+                "logo"
+              );
               body.data.teamByID.users.length.should.be.eql(1);
               body.data.teamByID.users.should.be.a("array");
               body.data.teamByID.users[0].should.have.keys(

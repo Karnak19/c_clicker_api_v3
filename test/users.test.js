@@ -12,16 +12,20 @@ beforeEach(() => {
   return sequelize.sync({ force: true });
 });
 
+const teamSample = {
+  name: "Foo Bar",
+  logo: "https://www.stickpng.com/assets/images/5848152fcef1014c0b5e4967.png"
+};
+const userSample = {
+  pseudo: "Jane Doe"
+};
 describe("User", () => {
   describe("GET USERS", () => {
     it("should return collection of users", done => {
-      const team = {
-        name: "Foo Bar"
-      };
-      Team.create(team).then(createdTeam => {
+      Team.create(teamSample).then(createdTeam => {
         const { uuid } = createdTeam;
         const user = {
-          pseudo: "Jane Doe",
+          ...userSample,
           TeamUuid: uuid
         };
         User.create(user).then(createdUser => {
@@ -42,13 +46,10 @@ describe("User", () => {
   });
   describe("GET AN USER", () => {
     it("should return an unique user", done => {
-      const team = {
-        name: "Foo Bar"
-      };
-      Team.create(team).then(createdTeam => {
+      Team.create(teamSample).then(createdTeam => {
         const { uuid } = createdTeam;
         const user = {
-          pseudo: "Jane Doe",
+          ...userSample,
           TeamUuid: uuid
         };
         User.create(user).then(createdUser => {
@@ -68,13 +69,10 @@ describe("User", () => {
   });
   describe("PUT USER SCORE", () => {
     it("should increment user score", done => {
-      const team = {
-        name: "Foo Bar"
-      };
-      Team.create(team).then(createdTeam => {
+      Team.create(teamSample).then(createdTeam => {
         const { uuid } = createdTeam;
         const user = {
-          pseudo: "Jane Doe",
+          ...userSample,
           TeamUuid: uuid
         };
         User.create(user).then(createdUser => {
@@ -90,13 +88,10 @@ describe("User", () => {
       });
     });
     it("should return 404", done => {
-      const team = {
-        name: "Foo Bar"
-      };
-      Team.create(team).then(createdTeam => {
+      Team.create(teamSample).then(createdTeam => {
         const { uuid } = createdTeam;
         const user = {
-          pseudo: "Jane Doe",
+          ...userSample,
           TeamUuid: uuid
         };
         User.create(user).then(createdUser => {
@@ -115,13 +110,10 @@ describe("User", () => {
   });
   describe("POST NEW USER", () => {
     it("should post a new user", done => {
-      const team = {
-        name: "Foo Bar"
-      };
-      Team.create(team).then(createdTeam => {
+      Team.create(teamSample).then(createdTeam => {
         const { uuid } = createdTeam;
         const user = {
-          pseudo: "Jane Doe",
+          ...userSample,
           team: uuid
         };
         chai

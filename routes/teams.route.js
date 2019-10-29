@@ -32,6 +32,24 @@ router.get("/", (req, res) => {
     });
 });
 
+router.get("/:uuid", regExpIntegrityCheck(uuidv4RegExp), (req, res) => {
+  const uuid = req.params.uuid;
+  Team.findOne({
+    where: {
+      uuid: uuid
+    },
+    include: [{ model: User, as: "users" }]
+  })
+    .then(result => res.status(200).json(result))
+    .catch(err => {
+      console.log(err);
+      res.status(400).json({
+        status: "error",
+        message: "Invalid request"
+      });
+    });
+});
+
 router.get("/:uuid/users", regExpIntegrityCheck(uuidv4RegExp), (req, res) => {
   const teamUuid = req.params.uuid;
   User.findAll({
