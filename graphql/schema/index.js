@@ -13,6 +13,7 @@ module.exports = buildSchema(`
   type Team {
     uuid: String!
     name: String!
+    logo: String!
     users: [User!]
   }
 

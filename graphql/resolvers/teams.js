@@ -32,7 +32,8 @@ module.exports = {
     const { name } = teamInput;
     const team = {
       uuid: uuidv4(),
-      name
+      name,
+      logo
     };
     return Team.create(team).then(result => {
       return result;
