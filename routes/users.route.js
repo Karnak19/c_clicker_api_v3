@@ -12,6 +12,7 @@ const { usersPost } = require("../joiSchemas");
 
 // Reach Sequelize models
 const User = require("../sequelize/models/users");
+const Team = require("../sequelize/models/teams");
 
 // Console Logging
 const awesomeLogger = require("../middlewares/awesomeLogger");
@@ -22,7 +23,7 @@ if (process.env.NODE_ENV != "test") {
 
 // Get all users
 router.get("/", (req, res) => {
-  User.findAll()
+  User.findAll({ include: [{ model: Team }] })
     .then(users => res.status(200).json(users))
     .catch(err => {
       console.log(err);
@@ -40,7 +41,8 @@ router.get("/:uuid", regExpIntegrityCheck(uuidv4RegExp), (req, res) => {
   User.findOne({
     where: {
       uuid: uuid
-    }
+    },
+    include: [{ model: Team }]
   })
     .then(result => res.status(200).json(result))
     .catch(err => {
