@@ -1,16 +1,17 @@
-const Joi = require("joi");
+const Joi = require("@hapi/joi");
 
 const joiValidation = (schema, propWhoNeedValidation) => (req, res, next) => {
-  const { error } = Joi.validate(req[propWhoNeedValidation], schema);
+  const { error } = schema.validate(req[propWhoNeedValidation], {
+    abortEarly: false
+  });
   const valid = error == null;
   if (valid) {
     next();
   } else {
     const { details } = error;
-    const message = details.map(i => i.message).join(",");
-    res.status(422).json({
-      error: message
-    });
+    console.log(error);
+
+    res.status(422).json(details);
   }
 };
 

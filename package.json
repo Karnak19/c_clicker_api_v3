@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@hapi/joi": "^16.1.7",
     "chalk": "^2.4.2",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
@@ -21,7 +22,6 @@
     "express-graphql": "^0.9.0",
     "express-status-monitor": "^1.2.6",
     "graphql": "^14.5.4",
-    "joi": "^14.3.1",
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.19.0",
