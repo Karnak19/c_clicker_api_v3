@@ -8,7 +8,7 @@ const regExpIntegrityCheck = require("../middlewares/regexpCheck");
 const { uuidv4RegExp } = require("../middlewares/regexpCheck");
 
 const joiValidate = require("../middlewares/joiValidate");
-const { usersPost } = require("../joiSchemas");
+const { usersPost, battleUuid } = require("../joiSchemas");
 
 // Reach Sequelize models
 const User = require("../sequelize/models/users");
@@ -94,5 +94,24 @@ router.put("/:uuid/click", regExpIntegrityCheck(uuidv4RegExp), (req, res) => {
       });
     });
 });
+
+router.put(
+  "/:uuid/joinbattle",
+  regExpIntegrityCheck(uuidv4RegExp),
+  joiValidate(battleUuid, "body"),
+  (req, res) => {
+    const userUuid = req.params.uuid;
+    const battleUuid = req.body.battle;
+    User.update({ BattleUuid: battleUuid }, { where: { uuid: userUuid } })
+      .then(result => res.status(200).end())
+      .catch(err => {
+        console.log(err);
+        res.status(400).json({
+          status: "error",
+          message: "invalid request"
+        });
+      });
+  }
+);
 
 module.exports = router;

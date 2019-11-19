@@ -44,6 +44,7 @@ app.use(
 // Routes
 app.use("/users", require("./routes/users.route.js"));
 app.use("/teams", require("./routes/teams.route.js"));
+app.use("/battles", require("./routes/battles.route.js"));
 
 async function main() {
   await sequelize.sync();

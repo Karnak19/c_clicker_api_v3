@@ -27,7 +27,8 @@ const userKeys = [
   "score",
   "TeamUuid",
   "createdAt",
-  "updatedAt"
+  "updatedAt",
+  "BattleUuid"
 ];
 
 describe("Team", () => {

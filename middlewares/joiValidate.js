@@ -9,8 +9,6 @@ const joiValidation = (schema, propWhoNeedValidation) => (req, res, next) => {
     next();
   } else {
     const { details } = error;
-    console.log(error);
-
     res.status(422).json(details);
   }
 };

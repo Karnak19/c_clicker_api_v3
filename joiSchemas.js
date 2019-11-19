@@ -24,3 +24,15 @@ module.exports.battlesPost = Joi.object({
   teamOneScore: Joi.number().required(),
   teamTwoScore: Joi.number().required()
 });
+
+module.exports.teamUuid = Joi.object({
+  team: Joi.string()
+    .guid({ version: "uuidv4" })
+    .required()
+});
+
+module.exports.battleUuid = Joi.object({
+  battle: Joi.string()
+    .guid({ version: "uuidv4" })
+    .required()
+});
