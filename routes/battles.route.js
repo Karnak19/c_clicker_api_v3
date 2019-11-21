@@ -4,7 +4,7 @@ const uuidv4 = require("uuid/v4");
 const sequelize = require("sequelize");
 
 // Reach Sequelize Model
-const Battles = require("../sequelize/models/battles");
+const Battle = require("../sequelize/models/battles");
 const User = require("../sequelize/models/users");
 
 const regExpIntegrityCheck = require("../middlewares/regexpCheck");
@@ -20,7 +20,7 @@ if (process.env.NODE_ENV != "test") {
 }
 
 router.get("/", (req, res) => {
-  Battles.findAll({ include: [{ model: User, as: "users" }] })
+  Battle.findAll({ include: [{ model: User, as: "users" }] })
     .then(battles => res.status(200).json(battles))
     .catch(err => {
       console.log(err);
@@ -33,7 +33,7 @@ router.get("/", (req, res) => {
 
 router.get("/:uuid", regExpIntegrityCheck(uuidv4RegExp), (req, res) => {
   const uuid = req.params.uuid;
-  Battles.findOne({
+  Battle.findOne({
     where: {
       uuid: uuid
     },
@@ -51,7 +51,7 @@ router.get("/:uuid", regExpIntegrityCheck(uuidv4RegExp), (req, res) => {
 
 router.post("/", joiValidate(battlesPost, "body"), (req, res) => {
   const payload = req.body;
-  Battles.create(payload)
+  Battle.create(payload)
     .then(newBattle => {
       res.send(newBattle);
     })
@@ -71,7 +71,7 @@ router.put(
     const battleuuid = req.params.uuid;
     const { team } = req.body;
 
-    Battles.findOne({
+    Battle.findOne({
       where: {
         uuid: battleuuid
       }
@@ -88,7 +88,7 @@ router.put(
             message: "Invalid request"
           });
         }
-        return Battles.update(payload, { where: { uuid: battleuuid } });
+        return Battle.update(payload, { where: { uuid: battleuuid } });
       })
       .then(result => {
         res.status(200).end();
