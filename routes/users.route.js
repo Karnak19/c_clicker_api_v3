@@ -24,12 +24,12 @@ if (process.env.NODE_ENV != "test") {
 // Get all users
 router.get("/", (req, res) => {
   User.findAll({ include: [{ model: Team }] })
-    .then(users => res.status(200).json(users))
-    .catch(err => {
+    .then((users) => res.status(200).json(users))
+    .catch((err) => {
       console.log(err);
       res.status(400).json({
         status: "error",
-        message: "Invalid request"
+        message: "Invalid request",
       });
     });
 });
@@ -40,16 +40,16 @@ router.get("/:uuid", regExpIntegrityCheck(uuidv4RegExp), (req, res) => {
 
   User.findOne({
     where: {
-      uuid: uuid
+      uuid: uuid,
     },
-    include: [{ model: Team }]
+    include: [{ model: Team }],
   })
-    .then(result => res.status(200).json(result))
-    .catch(err => {
+    .then((result) => res.status(200).json(result))
+    .catch((err) => {
       console.log(err);
       res.status(400).json({
         status: "error",
-        message: "Invalid request"
+        message: "Invalid request",
       });
     });
 });
@@ -65,14 +65,14 @@ router.post("/", joiValidate(usersPost, "body"), (req, res) => {
     uuid,
     pseudo,
     TeamUuid: team,
-    score
+    score,
   };
   User.create(user)
-    .then(result => res.status(201).json(result))
-    .catch(err => {
+    .then((result) => res.status(201).json(result))
+    .catch((err) => {
       res.status(400).json({
         status: "error",
-        message: `invalid request`
+        message: `invalid request`,
       });
     });
 });
@@ -81,16 +81,13 @@ router.post("/", joiValidate(usersPost, "body"), (req, res) => {
 router.put("/:uuid/click", regExpIntegrityCheck(uuidv4RegExp), (req, res) => {
   const userUuid = req.params.uuid;
 
-  User.update(
-    { score: sequelize.literal("score+1") },
-    { where: { uuid: userUuid } }
-  )
-    .then(result => res.status(200).end())
-    .catch(err => {
+  User.update({ score: sequelize.literal("score+1") }, { where: { uuid: userUuid } })
+    .then((result) => res.status(200).end())
+    .catch((err) => {
       console.log(err);
       res.status(400).json({
         status: "error",
-        message: "invalid request"
+        message: "invalid request",
       });
     });
 });
