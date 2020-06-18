@@ -1,0 +1,45 @@
+name: Integration tests Postgres
+
+on:
+  pull_request:
+    branches: [master, dev]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm test
+        env:
+          CI: true
+          PORT: 6000
+          DB_HOST: localhost
+          DB_USER: postgres
+          DB_PW: postgres
+          DB_DIALECT: postgres
+          DB_DATABASE: postgres
+          DB_DATABASE_TEST: postgres

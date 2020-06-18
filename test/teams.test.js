@@ -44,7 +44,7 @@ describe("Team", () => {
   describe("GET TEAMS", () => {
     it("should return collection of teams", async () => {
       try {
-        const res = await chai.request(server).get("/teams");
+        const res = await chai.request(server).get("/api/v1/teams");
         res.should.have.status(200);
         res.body.should.be.a("array");
         res.body.length.should.be.eql(1);
@@ -63,7 +63,9 @@ describe("Team", () => {
   describe("GET A TEAM", () => {
     it("should return an unique team", async () => {
       try {
-        const res = await chai.request(server).get(`/teams/${team.uuid}`);
+        const res = await chai
+          .request(server)
+          .get(`/api/v1/teams/${team.uuid}`);
 
         res.should.have.status(200);
         res.body.should.be.a("object");
@@ -79,7 +81,7 @@ describe("Team", () => {
 
     it("Should fail finding a team", async () => {
       try {
-        const res = await chai.request(server).get(`/teams/failing`);
+        const res = await chai.request(server).get(`/api/v1/teams/failing`);
 
         res.should.have.status(404);
         res.body.should.be.a("object");
@@ -94,7 +96,7 @@ describe("Team", () => {
       try {
         const res = await chai
           .request(server)
-          .post("/teams")
+          .post("/api/v1/teams")
           .send(teamSample);
 
         res.should.have.status(201);
