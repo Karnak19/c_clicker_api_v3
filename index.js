@@ -2,25 +2,24 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const helmet = require("helmet");
 const chalk = require("chalk");
+
+const sequelize = require("./sequelize");
+require("./sequelize/associations");
 
 const v1 = require("./v1");
 const v2 = require("./v2");
 
-const sequelize = require("./sequelize");
-
 const PORT = process.env.PORT || 4000;
-
-require("./sequelize/associations");
-
-// Swagger doc
 
 // Console Logging
 const error = chalk.bold.red;
 const success = chalk.bold.green;
 
-// Middlewares
 app.use(cors());
+app.use(helmet());
+app.disable("x-powered-by");
 app.use(express.json());
 app.use(require("express-status-monitor")({ title: "WCS Cookie Clicker" }));
 
