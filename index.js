@@ -2,19 +2,20 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const path = require("path");
-const PORT = process.env.PORT || 4000;
+const chalk = require("chalk");
+
+const v1 = require("./v1");
+const v2 = require("./v2");
+
 const sequelize = require("./sequelize");
+
+const PORT = process.env.PORT || 4000;
+
 require("./sequelize/associations");
-const graphqlHttp = require("express-graphql");
 
 // Swagger doc
-const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("./swagger.json");
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Console Logging
-const chalk = require("chalk");
 const error = chalk.bold.red;
 const success = chalk.bold.green;
 
@@ -23,31 +24,20 @@ app.use(cors());
 app.use(express.json());
 app.use(require("express-status-monitor")({ title: "WCS Cookie Clicker" }));
 
-app.get("/", (req, res) => res.send("Hello world !"));
-
-app.get("/logs", (req, res) => {
-  res.sendFile(path.join(__dirname, "logs/serverlog.json"));
-});
-
-// GraphQL
-const graphQlSchemas = require("./graphql/schema");
-const graphQlResolvers = require("./graphql/resolvers");
-app.use(
-  "/graphql",
-  graphqlHttp({
-    schema: graphQlSchemas,
-    rootValue: graphQlResolvers,
-    graphiql: true
+app.get("/", (req, res) =>
+  res.json({
+    message:
+      "Hello ! You can find interfaces from this API. /api/v1 provides you a REST API, /api/v2 provides you a GraphQL API"
   })
 );
 
 // Routes
-app.use("/users", require("./routes/users.route.js"));
-app.use("/teams", require("./routes/teams.route.js"));
+app.use("/api/v1", v1); // REST API
+app.use("/api/v2", v2); // GRAPHQL API
 
 async function main() {
-  await sequelize.sync();
   try {
+    await sequelize.sync();
     await sequelize.authenticate();
     console.log(success("Connection successful."));
     app.listen(PORT, err => {

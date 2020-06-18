@@ -43,7 +43,7 @@ describe("User", () => {
   describe("GET USERS", () => {
     it("should return collection of users", async () => {
       try {
-        const res = await chai.request(server).get("/users");
+        const res = await chai.request(server).get("/api/v1/users");
 
         res.should.have.status(200);
         res.body.should.be.a("array");
@@ -58,7 +58,9 @@ describe("User", () => {
   describe("GET AN USER", () => {
     it("should return an unique user", async () => {
       try {
-        const res = await chai.request(server).get(`/users/${user.uuid}`);
+        const res = await chai
+          .request(server)
+          .get(`/api/v1/users/${user.uuid}`);
 
         res.should.have.status(200);
         res.body.should.be.a("object");
@@ -70,12 +72,16 @@ describe("User", () => {
   });
   describe("PUT USER SCORE", () => {
     it("should increment user score", async () => {
-      const res = await chai.request(server).put(`/users/${user.uuid}/click`);
-      res.should.have.status(200);
+      const res = await chai
+        .request(server)
+        .put(`/api/v1/users/${user.uuid}/click`);
+      res.should.have.status(204);
     });
     it("should return 404", async () => {
       try {
-        const res = await chai.request(server).put(`/users/regexpfail/click`);
+        const res = await chai
+          .request(server)
+          .put(`/api/v1/users/regexpfail/click`);
 
         res.should.have.status(404);
         res.body.should.have.keys(errorKeys);
@@ -90,7 +96,7 @@ describe("User", () => {
       try {
         const res = await chai
           .request(server)
-          .post("/users")
+          .post("/api/v1/users")
           .send({ ...userSample, team: team.uuid });
 
         res.should.have.status(201);
@@ -105,7 +111,7 @@ describe("User", () => {
       try {
         const res = await chai
           .request(server)
-          .post(`/users`)
+          .post(`/api/v1/users`)
           .send({
             pseud: "Jane Doe"
           });
