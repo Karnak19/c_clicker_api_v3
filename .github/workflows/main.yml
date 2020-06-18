@@ -41,4 +41,5 @@ jobs:
           DB_USER: postgres
           DB_PW: postgres
           DB_DIALECT: postgres
+          DB_DATABASE: postgres
           DB_DATABASE_TEST: postgres
