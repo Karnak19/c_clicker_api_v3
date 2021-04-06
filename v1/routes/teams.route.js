@@ -8,15 +8,12 @@ const { uuidv4RegExp } = require("../../middlewares/regexpCheck");
 const joiValidate = require("../../middlewares/joiValidate");
 const { teamsPost } = require("../../joiSchemas");
 
-// Reach Sequelize models
-const Team = require("../../sequelize/models/teams");
-const User = require("../../sequelize/models/users");
+const { team, user, $executeRaw } = require("../../prisma/client");
 
 router.get("/", async (req, res) => {
   try {
-    const teams = await Team.findAll({
-      include: [{ model: User, as: "users" }]
-    });
+    const teams = await team.findMany();
+
     res.status(200).json(teams);
   } catch (error) {
     res.status(400).json({
@@ -29,12 +26,15 @@ router.get("/", async (req, res) => {
 router.get("/:uuid", regExpIntegrityCheck(uuidv4RegExp), async (req, res) => {
   const uuid = req.params.uuid;
   try {
-    const result = await Team.findOne({
+    const result = await team.findUnique({
       where: {
-        uuid: uuid
+        id: uuid
       },
-      include: [{ model: User, as: "users" }]
+      include: {
+        users: true
+      }
     });
+
     res.status(200).json(result);
   } catch (error) {
     res.status(400).json({
@@ -50,11 +50,12 @@ router.get(
   async (req, res) => {
     const teamUuid = req.params.uuid;
     try {
-      const rest = await User.findAll({
+      const rest = await user.findMany({
         where: {
-          TeamUuid: teamUuid
+          teamId: teamUuid
         }
       });
+
       res.status(200).json(rest);
     } catch (error) {
       res.status(400).json({
@@ -68,7 +69,9 @@ router.get(
 router.post("/", joiValidate(teamsPost, "body"), async (req, res) => {
   const payload = req.body;
   try {
-    const result = await Team.create(payload);
+    const result = await team.create({
+      data: payload
+    });
     res.status(201).json(result);
   } catch (error) {
     res.status(400).json({

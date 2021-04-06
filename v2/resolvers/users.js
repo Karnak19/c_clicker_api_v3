@@ -1,62 +1,38 @@
-const sequelize = require("sequelize");
-const uuidv4 = require("uuid/v4");
-const User = require("../../sequelize/models/users");
+const client = require("../../prisma/client");
+const { user } = require("../../prisma/client");
 
 module.exports = {
   users: async () => {
-    const users = await User.findAll();
     try {
-      return users;
+      return await user.findAll();
     } catch (err) {
-      console.log(err);
       throw err;
     }
   },
-  userByID: ({ uuid }) => {
-    return User.findOne({
+  userByID: async ({ id }) => {
+    return await user.findUnique({
       where: {
-        uuid: uuid
-      }
-    })
-      .then(result => result)
-      .catch(err => {
-        console.log(err);
-        throw err;
-      });
-  },
-  userClick: async ({ uuid }) => {
-    await User.update(
-      { score: sequelize.literal("score+1") },
-      {
-        where: { uuid: uuid },
-        returning: process.env.NODE_ENV === "production" ? true : false,
-        plain: process.env.NODE_ENV === "production" ? true : false
-      }
-    );
-    const updatedUser = await User.findOne({
-      where: {
-        uuid: uuid
+        id
       }
     });
-    return updatedUser;
   },
-  createUser: ({ userInput }) => {
-    const { pseudo, team } = userInput;
-    const uuid = uuidv4();
-    const score = 0;
-    const user = {
-      uuid,
-      pseudo,
-      TeamUuid: team,
-      score
-    };
-    return User.create(user)
-      .then(result => {
-        return result;
-      })
-      .catch(err => {
-        console.log(err);
-        throw err;
-      });
+  userClick: async ({ id }) => {
+    await prisma.$executeRaw`update "User" set score = score + 1 where id = ${id};`;
+
+    return await user.findUnique({
+      where: {
+        id
+      }
+    });
+  },
+  createUser: async ({ userInput: { pseudo, team } }) => {
+    return await user.create({
+      data: {
+        pseudo,
+        id,
+        teamId: team,
+        score: 0
+      }
+    });
   }
 };
