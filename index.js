@@ -6,7 +6,7 @@ const helmet = require("helmet");
 const chalk = require("chalk");
 
 const v1 = require("./v1");
-const v2 = require("./v2");
+// const v2 = require("./v2");
 
 const PORT = process.env.PORT || 4000;
 
@@ -28,7 +28,7 @@ app.get("/", (req, res) =>
 
 // Routes
 app.use("/api/v1", v1); // REST API
-app.use("/api/v2", v2); // GRAPHQL API
+// app.use("/api/v2", v2); // GRAPHQL API
 
 async function main() {
   try {
