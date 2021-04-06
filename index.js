@@ -5,11 +5,8 @@ const cors = require("cors");
 const helmet = require("helmet");
 const chalk = require("chalk");
 
-const sequelize = require("./sequelize");
-require("./sequelize/associations");
-
 const v1 = require("./v1");
-const v2 = require("./v2");
+// const v2 = require("./v2");
 
 const PORT = process.env.PORT || 4000;
 
@@ -21,7 +18,6 @@ app.use(cors());
 app.use(helmet());
 app.disable("x-powered-by");
 app.use(express.json());
-app.use(require("express-status-monitor")({ title: "WCS Cookie Clicker" }));
 
 app.get("/", (req, res) =>
   res.json({
@@ -32,13 +28,10 @@ app.get("/", (req, res) =>
 
 // Routes
 app.use("/api/v1", v1); // REST API
-app.use("/api/v2", v2); // GRAPHQL API
+// app.use("/api/v2", v2); // GRAPHQL API
 
 async function main() {
   try {
-    await sequelize.sync();
-    await sequelize.authenticate();
-    console.log(success("Connection successful."));
     app.listen(PORT, err => {
       if (err) {
         throw new Error(error("Something bad happened ..."));

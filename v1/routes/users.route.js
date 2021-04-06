@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const sequelize = require("sequelize");
 
 // custom Middlewares
 const regExpIntegrityCheck = require("../../middlewares/regexpCheck");
@@ -8,15 +7,13 @@ const { uuidv4RegExp } = require("../../middlewares/regexpCheck");
 
 const joiValidate = require("../../middlewares/joiValidate");
 const { usersPost } = require("../../joiSchemas");
-
-// Reach Sequelize models
-const User = require("../../sequelize/models/users");
-const Team = require("../../sequelize/models/teams");
+const prisma = require("../../prisma/client");
+const { user } = require("../../prisma/client");
 
 // Get all users
 router.get("/", async (req, res) => {
   try {
-    const users = await User.findAll({ include: [{ model: Team }] });
+    const users = await user.findMany();
     res.status(200).json(users);
   } catch (err) {
     console.log(err);
@@ -31,11 +28,13 @@ router.get("/", async (req, res) => {
 router.get("/:uuid", regExpIntegrityCheck(uuidv4RegExp), async (req, res) => {
   const uuid = req.params.uuid;
   try {
-    const user = await User.findOne({
+    const user = await user.findUnique({
       where: {
-        uuid: uuid
+        id: uuid
       },
-      include: [{ model: Team }]
+      include: {
+        team: true
+      }
     });
     res.status(200).json(user);
   } catch (error) {
@@ -50,13 +49,17 @@ router.get("/:uuid", regExpIntegrityCheck(uuidv4RegExp), async (req, res) => {
 router.post("/", joiValidate(usersPost, "body"), async (req, res) => {
   const { team, pseudo } = req.body;
   try {
-    const score = 0;
-    const user = {
-      pseudo,
-      TeamUuid: team,
-      score
-    };
-    const result = await User.create(user);
+    const result = await user.create({
+      data: {
+        pseudo,
+        score: 0,
+        team: {
+          connect: {
+            id: team
+          }
+        }
+      }
+    });
     res.status(201).json(result);
   } catch (error) {
     res.status(400).json({
@@ -73,12 +76,11 @@ router.put(
   async (req, res) => {
     const userUuid = req.params.uuid;
     try {
-      await User.update(
-        { score: sequelize.literal("score+1") },
-        { where: { uuid: userUuid } }
-      );
+      await prisma.$executeRaw`update "User" set score = score + 1 where id = ${userUuid};`;
+
       res.status(204).end();
     } catch (error) {
+      console.log(error);
       res.status(400).json({
         status: "error",
         message: "invalid request"

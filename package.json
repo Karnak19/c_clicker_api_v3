@@ -6,41 +6,37 @@
   "scripts": {
     "test": "NODE_ENV=test PORT=4001 & mocha --reporter=list --exit",
     "start": "NODE_ENV=production node index.js",
-    "dev": "nodemon index.js --trace-sync-io",
-    "resync": "node sequelize/resync.js",
-    "seed": "node sequelize/seeds.js"
+    "prestart": "npx prisma migrate deploy && npx prisma generate",
+    "dev": "nodemon index.js --trace-sync-io"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^2.20.1",
     "chalk": "^2.4.2",
     "cors": "^2.8.5",
-    "dotenv": "^8.0.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-graphql": "^0.9.0",
-    "express-status-monitor": "^1.2.6",
-    "graphql": "^14.5.4",
-    "helmet": "^3.23.1",
-    "joi": "^14.3.1",
-    "pg": "^7.11.0",
-    "pg-hstore": "^2.3.3",
-    "sequelize": "^5.19.0"
+    "graphql": "^14.7.0",
+    "helmet": "^3.23.3",
+    "joi": "^14.3.1"
   },
   "devDependencies": {
-    "axios": "^0.19.0",
-    "chai": "^4.2.0",
+    "chai": "^4.3.4",
     "chai-http": "^4.3.0",
-    "husky": "^3.0.0",
-    "mocha": "^6.1.4",
-    "mysql2": "^1.6.5",
-    "nodemon": "^1.19.1",
-    "prettier": "^1.18.2",
-    "pretty-quick": "^1.11.1"
+    "husky": "^3.1.0",
+    "mocha": "^6.2.3",
+    "mysql2": "^1.7.0",
+    "nodemon": "^1.19.4",
+    "prettier": "^1.19.1",
+    "pretty-quick": "^1.11.1",
+    "prisma": "^2.20.1"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm test && pretty-quick --staged",
+      "pre-commit": "pretty-quick --staged",
       "post-merge": "npm install"
     }
   },

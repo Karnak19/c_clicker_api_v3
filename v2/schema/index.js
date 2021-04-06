@@ -4,14 +4,14 @@ const { buildSchema } = require("graphql");
 
 module.exports = buildSchema(`
   type User {
-    uuid: String!
+    id: String!
     pseudo: String!
     score: Int!
-    TeamUuid: String!
+    teamId: String!
   }
 
   type Team {
-    uuid: String!
+    id: String!
     name: String!
     logo: String!
     users: [User!]
@@ -28,14 +28,14 @@ module.exports = buildSchema(`
 
   type RootQuery {
     users : [User!]!
-    userByID(uuid: String!) : User!
+    userByID(id: String!) : User!
     teams: [Team!]!
-    teamByID(uuid: String!): Team!
+    teamByID(id: String!): Team!
   }
   
   type RootMutation {
     createUser(userInput: UserInput): User
-    userClick(uuid: String!): User
+    userClick(id: String!): User
     createTeam(teamInput: TeamInput): Team
   }
 

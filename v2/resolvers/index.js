@@ -1,8 +1,8 @@
 const userResolver = require("./users");
-const teamResolver = require("./teams");
+// const teamResolver = require('./teams');
 
 const rootResolver = {
-  ...teamResolver,
+  // ...teamResolver,
   ...userResolver
 };
 
